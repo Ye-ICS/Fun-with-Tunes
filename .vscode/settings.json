@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\yek\\OneDrive - Limestone DSB\\Grade 11 CS\\lib\\stdlib.jar"
+    ]
+}
