@@ -7,11 +7,12 @@ class App {
 
     static void playTwinkle(int beatsPerMinute) {
         int[] notes = {StdMidi.C4, StdMidi.C4, StdMidi.G4, StdMidi.G4, StdMidi.A4, StdMidi.A4, StdMidi.G4};
+        double[] durations = {1, 1, 1, 1, 1, 1, 2};
 
         StdMidi.setTempo(beatsPerMinute);
 
         for (int i = 0; i < notes.length; i++) {
-            StdMidi.playNote(notes[i], 1);
+            StdMidi.playNote(notes[i], durations[i]);
         }
     }
 
