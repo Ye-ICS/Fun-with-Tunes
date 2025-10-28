@@ -2,6 +2,12 @@ class App {
     public static void main(String[] args) {
         System.out.println("Hello");
 
+        // Testing:
+        int noteCode = Notes.getNoteCode("A4");
+        System.out.println("A4 has code " + noteCode);
+        StdMidi.playNote(noteCode, 10);
+
+        StdMidi.setInstrument(StdMidi.ACOUSTIC_GRAND_PIANO);
         playTwinkle(30);
     }
 
