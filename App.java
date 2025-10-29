@@ -12,13 +12,20 @@ class App {
     }
 
     static void playTwinkle(int beatsPerMinute) {
-        int[] notes = {StdMidi.C4, StdMidi.C4, StdMidi.G4, StdMidi.G4, StdMidi.A4, StdMidi.A4, StdMidi.G4};
+        // Store notes as strings
+        String[] noteStrings = {"C4", "C4", "G4", "G4", "A4", "A4", "G4"};
+        int[] noteCodes = new int[noteStrings.length];  // 7 elements, {0, 0, 0, 0, 0, 0, 0 }
         double[] durations = {1, 1, 1, 1, 1, 1, 2};
 
-        StdMidi.setTempo(beatsPerMinute);
+        // Convert note strings into note codes
+        for (int i = 0; i < noteCodes.length; i++) {
+            noteCodes[i] = Notes.getNoteCode(noteStrings[i]);
+        }
 
-        for (int i = 0; i < notes.length; i++) {
-            StdMidi.playNote(notes[i], durations[i]);
+        StdMidi.setTempo(beatsPerMinute);
+        // Play note codes
+        for (int i = 0; i < noteCodes.length; i++) {
+            StdMidi.playNote(noteCodes[i], durations[i]);
         }
     }
 
