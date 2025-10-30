@@ -1,10 +1,13 @@
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Hello");
 
         // Testing:
+        playFile("Star Wars.txt");
         playUserNotes();
 
         StdMidi.setInstrument(StdMidi.ACOUSTIC_GRAND_PIANO);
@@ -23,6 +26,29 @@ class App {
         int[] notes = new int[noteStrings.length];
 
         // Convert user notes into int note codes
+        for (int i = 0; i < noteStrings.length; i++) {
+            notes[i] = Notes.getNoteCode(noteStrings[i]);
+        }
+
+        // Play notes
+        for (int i = 0; i < notes.length; i++) {
+            StdMidi.playNote(notes[i], 1);
+        }
+    }
+    
+    /**
+     * Plays notes from a file, where notes are all on one line separated by spaces.
+     * @param filename Name of file containing notes.
+     * @throws FileNotFoundException 
+     */
+    static void playFile(String filename) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File(filename));
+
+        String line = sc.nextLine();
+        String[] noteStrings = line.split(" ");
+        int[] notes = new int[noteStrings.length];
+
+        // Convert String notes into int note codes
         for (int i = 0; i < noteStrings.length; i++) {
             notes[i] = Notes.getNoteCode(noteStrings[i]);
         }
