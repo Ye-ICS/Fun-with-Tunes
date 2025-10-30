@@ -16,17 +16,16 @@ class App {
      */
     static void playUserNotes() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("How many notes? ");
 
         // Create array of desired length
-        int length = Integer.parseInt(sc.nextLine());
-        String[] noteStrings = new String[length];
-        int[] notes = new int[length];
+        System.out.println("Enter each note, separated by spaces: ");
+        String line = sc.nextLine();
+        String[] noteStrings = line.split(" ");
+        int[] notes = new int[noteStrings.length];
 
-        System.out.println("Enter each note, one per line:");
         // Convert user String notes into int
         for (int i = 0; i < noteStrings.length; i++) {
-            notes[i] = Notes.getNoteCode(sc.nextLine());
+            notes[i] = Notes.getNoteCode(noteStrings[i]);
         }
 
         // Play notes
