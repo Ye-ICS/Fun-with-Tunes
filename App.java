@@ -12,18 +12,17 @@ class App {
     }
 
     /**
-     * Lets user enter notes, one per line, and plays them back.
+     * Lets user enter notes all on one line separated by spaces, and plays them back.
      */
     static void playUserNotes() {
         Scanner sc = new Scanner(System.in);
 
-        // Create array of desired length
         System.out.println("Enter each note, separated by spaces: ");
         String line = sc.nextLine();
-        String[] noteStrings = line.split(" ");
+        String[] noteStrings = line.split(" "); // Split by spaces
         int[] notes = new int[noteStrings.length];
 
-        // Convert user String notes into int
+        // Convert user notes into int note codes
         for (int i = 0; i < noteStrings.length; i++) {
             notes[i] = Notes.getNoteCode(noteStrings[i]);
         }
@@ -36,7 +35,7 @@ class App {
 
     static void playTwinkle(int beatsPerMinute) {
         // Store notes as strings
-        String[] noteStrings = {"C4", "C4", "G4", "G4", "A4", "A4", "G4"};
+        String[] noteStrings = "C4 C4 G4 G4 A4 A4 G4".split(" ");
         int[] noteCodes = new int[noteStrings.length];  // 7 elements, {0, 0, 0, 0, 0, 0, 0 }
         double[] durations = {1, 1, 1, 1, 1, 1, 2};
 
