@@ -49,12 +49,7 @@ class Tunes {
         }
     }
 
-    static void playTwinkle(int beatsPerMinute) {
-        StdMidi.setTempo(beatsPerMinute);
-        
-        // Store notes as strings
-        String[] noteStrings = "C4 C4 G4 G4 A4 A4 G4".split(" ");
-        double[] durations = {1, 1, 1, 1, 1, 1, 2};
+    static void playNotes(String[] noteStrings, double[] durations) {
         int[] noteCodes = new int[noteStrings.length];
 
         // Convert note strings into note codes
@@ -68,21 +63,20 @@ class Tunes {
         }
     }
 
+    static void playTwinkle(int beatsPerMinute) {
+        StdMidi.setTempo(beatsPerMinute);
+        
+        // Store notes as strings
+        String[] noteStrings = "C4 C4 G4 G4 A4 A4 G4".split(" ");
+        double[] durations = {1, 1, 1, 1, 1, 1, 2};
+        playNotes(noteStrings, durations);
+    }
+
     static void playMoonlightSonata (int beatsPerMinute) {
         StdMidi.setTempo(beatsPerMinute);
 
         String[] noteStrings = "R E4 G#4 B4 E5 G#5 B5 E6 B5 G#5 E5 B4 G#4 E4".split(" ");
         double[] durations = {4, 0.5, 0.5, 1, 0.5, 0.5, 1, 2, 0.5, 0.5, 1, 0.5, 0.5, 1, 2};
-        int[] noteCodes = new int[noteStrings.length];
-
-        // Convert note strings into note codes
-        for (int i = 0; i < noteCodes.length; i++) {
-            noteCodes[i] = Notes.getNoteCode(noteStrings[i]);
-        }
-
-        // Play note codes
-        for (int i = 0; i < noteCodes.length; i++) {
-            StdMidi.playNote(noteCodes[i], durations[i]);
-        }
+        playNotes(noteStrings, durations);
     }
 }
