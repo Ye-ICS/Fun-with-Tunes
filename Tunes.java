@@ -36,13 +36,7 @@ class Tunes {
      * @param durations double array of durations for each note
      */
     static void playNotes(String[] noteStrings, double[] durations) {
-        int[] noteCodes = new int[noteStrings.length];
-
-        // Convert note strings into note codes
-        for (int i = 0; i < noteCodes.length; i++) {
-            noteCodes[i] = Notes.getNoteCode(noteStrings[i]);
-        }
-
+        int[] noteCodes = getNoteCodes(noteStrings);
         // Play note codes
         for (int i = 0; i < noteCodes.length; i++) {
             StdMidi.playNote(noteCodes[i], durations[i]);
@@ -58,6 +52,21 @@ class Tunes {
         double[] durations = new double[noteStrings.length];
         Arrays.fill(durations, 1);
         playNotes(noteStrings, durations);
+    }
+
+    /**
+     * Convert array of note strings into array of note codes
+     * @param noteStrings array of notes as strings
+     * @return array of note codes
+     */
+    static int[] getNoteCodes(String[] noteStrings) {
+        int[] noteCodes = new int[noteStrings.length];
+
+        // Convert note strings into note codes
+        for (int i = 0; i < noteCodes.length; i++) {
+            noteCodes[i] = Notes.getNoteCode(noteStrings[i]);
+        }
+        return noteCodes;
     }
 
     static void playTwinkle(int beatsPerMinute) {
