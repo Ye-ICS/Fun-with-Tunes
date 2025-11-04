@@ -18,16 +18,28 @@ class Tunes {
     }
     
     /**
-     * Plays notes from a file, where notes are all on one line separated by spaces.
+     * Plays notes from a file, in following format:
+     * Line 1 contains notes, separated by commas.
+     * Line 2 contains durations, separated by commas.
+     * 
      * @param filename Name of file containing notes.
      * @throws FileNotFoundException 
      */
     static void playFile(String filename) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filename));
 
-        String line = sc.nextLine();
-        String[] noteStrings = line.split(" ");
-        playNotes(noteStrings);
+        String notesLine = sc.nextLine();
+        String durationsLine = sc.nextLine();
+        String[] noteStrings = notesLine.split(",");
+
+        // Convert durations line to double array
+        String[] durationStrings = durationsLine.split(",");
+        double[] durations = new double[durationStrings.length];
+        for (int i = 0; i < durationStrings.length; i++) {
+            durations[i] = Double.parseDouble(durationStrings[i]);
+        }
+
+        playNotes(noteStrings, durations);
     }
 
     /**
