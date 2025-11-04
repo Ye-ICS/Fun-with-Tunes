@@ -19,8 +19,9 @@ class Tunes {
     
     /**
      * Plays notes from a file, in following format:
-     * Line 1 contains notes, separated by commas.
-     * Line 2 contains durations, separated by commas.
+     * Line 1 contains an integer, representing beats per minute.
+     * Line 2 contains notes, separated by commas.
+     * Line 3 contains durations, separated by commas.
      * 
      * @param filename Name of file containing notes.
      * @throws FileNotFoundException 
@@ -28,6 +29,7 @@ class Tunes {
     static void playFile(String filename) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filename));
 
+        int beatsPerMinute = Integer.parseInt(sc.nextLine());
         String notesLine = sc.nextLine();
         String durationsLine = sc.nextLine();
         String[] noteStrings = notesLine.split(",");
@@ -39,6 +41,7 @@ class Tunes {
             durations[i] = Double.parseDouble(durationStrings[i]);
         }
 
+        StdMidi.setTempo(beatsPerMinute);
         playNotes(noteStrings, durations);
     }
 
