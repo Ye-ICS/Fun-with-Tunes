@@ -26,7 +26,7 @@ class Notes {
                 // Also add equivalent note, if any.
                 String equivalentNote = getEquivalentNote(note);
                 if (!equivalentNote.equals(note)) {
-                    noteCodesMap.put(equivalentNote, noteCode);
+                    noteCodesMap.put(equivalentNote.toLowerCase(), noteCode);
                 }
 
                 noteCode++;
