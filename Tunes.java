@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Arrays;
 
 class Tunes {
     
@@ -13,17 +14,7 @@ class Tunes {
         System.out.println("Enter each note, separated by spaces: ");
         String line = sc.nextLine();
         String[] noteStrings = line.split(" "); // Split by spaces
-        int[] notes = new int[noteStrings.length];
-
-        // Convert user notes into int note codes
-        for (int i = 0; i < noteStrings.length; i++) {
-            notes[i] = Notes.getNoteCode(noteStrings[i]);
-        }
-
-        // Play notes
-        for (int i = 0; i < notes.length; i++) {
-            StdMidi.playNote(notes[i], 1);
-        }
+        playNotes(noteStrings);
     }
     
     /**
@@ -36,19 +27,14 @@ class Tunes {
 
         String line = sc.nextLine();
         String[] noteStrings = line.split(" ");
-        int[] notes = new int[noteStrings.length];
-
-        // Convert String notes into int note codes
-        for (int i = 0; i < noteStrings.length; i++) {
-            notes[i] = Notes.getNoteCode(noteStrings[i]);
-        }
-
-        // Play notes
-        for (int i = 0; i < notes.length; i++) {
-            StdMidi.playNote(notes[i], 1);
-        }
+        playNotes(noteStrings);
     }
 
+    /**
+     * Play notes for specified durations
+     * @param noteStrings String array of notes
+     * @param durations double array of durations for each note
+     */
     static void playNotes(String[] noteStrings, double[] durations) {
         int[] noteCodes = new int[noteStrings.length];
 
@@ -61,6 +47,17 @@ class Tunes {
         for (int i = 0; i < noteCodes.length; i++) {
             StdMidi.playNote(noteCodes[i], durations[i]);
         }
+    }
+
+    /**
+     * Play notes, one beat per note
+     * @param noteStrings Notes to play in a String array
+     */
+    static void playNotes(String[] noteStrings) {
+        // Create durations array with all 1's and call the other existing playNotes method
+        double[] durations = new double[noteStrings.length];
+        Arrays.fill(durations, 1);
+        playNotes(noteStrings, durations);
     }
 
     static void playTwinkle(int beatsPerMinute) {
