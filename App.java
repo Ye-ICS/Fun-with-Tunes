@@ -1,32 +1,18 @@
-import java.util.Scanner;
-import java.io.FileNotFoundException;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
-class App {
-    public static void main(String[] args) throws FileNotFoundException {
-        Scanner sc = new Scanner(System.in);
+public class App extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-        // Menu to choose what tune to play
-        int choice;
-        do {
-            System.out.println("Choose an option:");
-            System.out.println("1. Play user-entered notes");
-            System.out.println("2. Play notes from file");
-            System.out.println("3. Play Twinkle Twinkle Little Star");
-            System.out.println("4. Play Moonlight Sonata");
-            System.out.println("5. Exit");
-            choice = Integer.parseInt(sc.nextLine());
-            switch (choice) {
-                case 1 -> Tunes.playUserNotes();
-                case 2 -> {
-                    System.out.println("Enter filename: ");
-                    String filename = sc.nextLine();
-                    Tunes.playFile(filename);
-                }
-                case 3 -> Tunes.playTwinkle(60);
-                case 4 -> Tunes.playMoonlightSonata(60);
-                case 5 -> System.out.println("Exiting...");
-                default -> System.out.println("Invalid choice");
-            }
-        } while (choice != 5);
+    @Override
+    public void start(Stage stage) {
+        Button button = new Button("CLICK ME");
+        Scene scene = new Scene(button, 200, 200);
+        stage.setScene(scene);
+        stage.show();
     }
 }
