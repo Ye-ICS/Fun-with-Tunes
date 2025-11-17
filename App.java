@@ -1,3 +1,5 @@
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,11 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class App extends Application {
     Slider bpmSlider;
     Slider volumeSlider;
+    Text fileText;
+    File tuneFile;
 
     public static void main(String[] args) {
         launch(args);
@@ -34,6 +40,9 @@ public class App extends Application {
         Label noteLabel = new Label("Custom note:");
         TextField noteBox = new TextField();
         Button userNotesBtn = new Button("Play Note");
+        fileText = new Text();
+        Button fileSelectBtn = new Button("Open File");
+        Button filePlayBtn = new Button("Play File");
         
         VBox controlsBox = new VBox();
         controlsBox.setStyle("-fx-border-color: red; -fx-spacing: 20; -fx-padding: 10");
@@ -49,7 +58,7 @@ public class App extends Application {
         BorderPane.setAlignment(tunesLabel, Pos.CENTER);
         controlsBox.getChildren().addAll(bpmLabel, bpmSlider, volumeLabel, volumeSlider);
         presetTunesBox.setRight(controlsBox);
-        tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, noteLabel, noteBox, userNotesBtn);
+        tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, noteLabel, noteBox, userNotesBtn, fileText, fileSelectBtn, filePlayBtn);
         presetTunesBox.setCenter(tuneButtonsBox);
 
         // Reactions (aka callbacks):
@@ -61,6 +70,8 @@ public class App extends Application {
             int noteCode = Notes.getNoteCode(note);
             StdMidi.playNote(noteCode, 1);
         });
+        fileSelectBtn.setOnAction(event -> openFileChooser());
+        // TODO: Set callback on filePlayBtn to play tuneFile
         
         Scene scene = new Scene(presetTunesBox);
         stage.setScene(scene);
@@ -79,6 +90,16 @@ public class App extends Application {
             case 0 -> Tunes.playTwinkle(bpm);
             case 1 -> Tunes.playMoonlightSonata(bpm);
             default -> System.out.println("Invalid tune code");
+        }
+    }
+
+    void openFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Tune File");
+        tuneFile = fileChooser.showOpenDialog(null);
+
+        if (tuneFile != null) {
+            fileText.setText(tuneFile.getName());
         }
     }
 }
