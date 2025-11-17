@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.File;
 import java.io.FileNotFoundException;
 
 class Cli {
@@ -20,7 +21,8 @@ class Cli {
                 case 2 -> {
                     System.out.println("Enter filename: ");
                     String filename = sc.nextLine();
-                    Tunes.playFile(filename);
+                    File tunesFile = new File(filename);
+                    Tunes.playFile(tunesFile);
                 }
                 case 3 -> Tunes.playTwinkle(60);
                 case 4 -> Tunes.playMoonlightSonata(60);
