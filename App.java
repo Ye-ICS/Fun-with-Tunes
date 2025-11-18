@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 public class App extends Application {
     Slider bpmSlider;
     Slider volumeSlider;
+    TextField noteBox;
     Text fileText;
     File tuneFile;
 
@@ -38,7 +40,7 @@ public class App extends Application {
         Button twinkleBtn = new Button("Twinkle");
         Button moonlightBtn = new Button("Moonlight Sonata");
         Label noteLabel = new Label("Custom note:");
-        TextField noteBox = new TextField();
+        noteBox = new TextField();
         Button userNotesBtn = new Button("Play Note");
         fileText = new Text();
         Button fileSelectBtn = new Button("Open File");
@@ -64,18 +66,20 @@ public class App extends Application {
         // Reactions (aka callbacks):
         twinkleBtn.setOnAction(event -> playTune(0));
         moonlightBtn.setOnAction(event -> playTune(1));
-        userNotesBtn.setOnAction(event -> {
-            StdMidi.setVelocity((int) volumeSlider.getValue() * 127 / 100);
-            String note = noteBox.getText();
-            int noteCode = Notes.getNoteCode(note);
-            StdMidi.playNote(noteCode, 1);
-        });
+        userNotesBtn.setOnAction(event -> playUserNote());
         fileSelectBtn.setOnAction(event -> openFileChooser());
         // TODO: Set callback on filePlayBtn to play tuneFile
         
         Scene scene = new Scene(presetTunesBox);
         stage.setScene(scene);
         stage.show();
+    }
+
+    void playUserNote() {
+        StdMidi.setVelocity((int) volumeSlider.getValue() * 127 / 100);
+        String note = noteBox.getText();
+        int noteCode = Notes.getNoteCode(note);
+        StdMidi.playNote(noteCode, 1);
     }
 
     /**
