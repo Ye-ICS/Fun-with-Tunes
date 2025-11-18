@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.Arrays;
 
@@ -32,6 +33,7 @@ class Tunes {
         int beatsPerMinute = Integer.parseInt(sc.nextLine());
         String notesLine = sc.nextLine();
         String durationsLine = sc.nextLine();
+        sc.close();
         String[] noteStrings = notesLine.split(",");
 
         // Convert durations line to double array
@@ -43,6 +45,24 @@ class Tunes {
 
         StdMidi.setTempo(beatsPerMinute);
         playNotes(noteStrings, durations);
+    }
+
+    /**
+     * Saves notes to a file in following format:
+     * Line 1: notes, separated by commas
+     * Line 2: durations, separated by commas
+     * Line 3: bpm (one integer number)
+     * @param file File to save to
+     * @param notes Array of notes as strings
+     * @param durations Array of durations for each note
+     * @param bpm Beats per minute
+     * @throws FileNotFoundException
+     */
+    static void saveToFile(File file, String[] notes, double[] durations, int bpm) throws FileNotFoundException {
+        PrintWriter fileWriter = new PrintWriter(file);
+
+        // TODO: Write notes, durations, and bpm to file.
+        // TODO: Close the fileWriter to save the file.
     }
 
     /**
