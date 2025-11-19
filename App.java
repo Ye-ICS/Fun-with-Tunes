@@ -18,7 +18,8 @@ import javafx.stage.Stage;
 public class App extends Application {
     Slider bpmSlider;
     Slider volumeSlider;
-    TextField noteBox;
+    TextField notesBox;
+    TextField durationsBox;
     Text fileText;
     File tuneFile;
 
@@ -39,9 +40,14 @@ public class App extends Application {
         tuneButtonsBox.setStyle("-fx-border-color: green; -fx-padding: 10; -fx-hgap: 20; -fx-vgap: 20");
         Button twinkleBtn = new Button("Twinkle");
         Button moonlightBtn = new Button("Moonlight Sonata");
-        Label noteLabel = new Label("Custom note:");
-        noteBox = new TextField();
+
+        VBox userNotesBox = new VBox();
+        Label noteLabel = new Label("Custom notes:");
+        notesBox = new TextField();
+        Label durationsLabel = new Label("Durations:");
+        durationsBox = new TextField();
         Button userNotesBtn = new Button("Play Note");
+
         fileText = new Text();
         Button fileSelectBtn = new Button("Open File");
         Button filePlayBtn = new Button("Play File");
@@ -60,13 +66,14 @@ public class App extends Application {
         BorderPane.setAlignment(tunesLabel, Pos.CENTER);
         controlsBox.getChildren().addAll(bpmLabel, bpmSlider, volumeLabel, volumeSlider);
         presetTunesBox.setRight(controlsBox);
-        tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, noteLabel, noteBox, userNotesBtn, fileText, fileSelectBtn, filePlayBtn);
+        userNotesBox.getChildren().addAll(noteLabel, notesBox, durationsLabel, durationsBox, userNotesBtn);
+        tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, userNotesBox, fileText, fileSelectBtn, filePlayBtn);
         presetTunesBox.setCenter(tuneButtonsBox);
 
         // Reactions (aka callbacks):
         twinkleBtn.setOnAction(event -> playTune(0));
         moonlightBtn.setOnAction(event -> playTune(1));
-        userNotesBtn.setOnAction(event -> playUserNote());
+        userNotesBtn.setOnAction(event -> playUserNotes());
         fileSelectBtn.setOnAction(event -> openFileChooser());
         filePlayBtn.setOnAction(event -> playTuneFile());
         
@@ -75,11 +82,18 @@ public class App extends Application {
         stage.show();
     }
 
-    void playUserNote() {
+    /**
+     * Callback method to play user-entered notes.
+     */
+    void playUserNotes() {
+        StdMidi.setTempo((int) bpmSlider.getValue());
         StdMidi.setVelocity((int) volumeSlider.getValue() * 127 / 100);
-        String note = noteBox.getText();
-        int noteCode = Notes.getNoteCode(note);
-        StdMidi.playNote(noteCode, 1);
+        String notesLine = notesBox.getText();
+        String durationsLine = durationsBox.getText();
+        String[] notes = notesLine.split(",");
+        double[] durations = Utils.parseDoubles(durationsLine.split(","));
+
+        Tunes.playNotes(notes, durations);
     }
 
     /**
