@@ -80,6 +80,7 @@ public class App extends Application {
         filePlayBtn.setOnAction(event -> playTuneFile());
         
         Scene scene = new Scene(presetTunesBox);
+        scene.getStylesheets().add("styles/default_theme.css");
         stage.setScene(scene);
         stage.show();
     }

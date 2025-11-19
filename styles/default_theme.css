@@ -1,0 +1,302 @@
+/* Material Design 3 – Light Theme for JavaFX
+ * ------------------------------------------------------------------
+ * Color roles (light scheme) roughly aligned with M3 defaults.
+ * You can override these on any parent node to restyle sections.
+ */
+
+/* ===== Color Tokens (looked-up colors) ===== */
+.root {
+    /* Primary */
+    -fx-primary: #6750A4;
+    -fx-on-primary: #FFFFFF;
+    -fx-primary-container: #EADDFF;
+    -fx-on-primary-container: #21005D;
+
+    /* Secondary */
+    -fx-secondary: #625B71;
+    -fx-on-secondary: #FFFFFF;
+    -fx-secondary-container: #E8DEF8;
+    -fx-on-secondary-container: #1D192B;
+
+    /* Tertiary (optional accents) */
+    -fx-tertiary: #7D5260;
+    -fx-on-tertiary: #FFFFFF;
+    -fx-tertiary-container: #FFD8E4;
+    -fx-on-tertiary-container: #31111D;
+
+    /* Neutrals / Surfaces */
+    -fx-surface: #FFFBFE;           /* app surface */
+    -fx-on-surface: #1C1B1F;
+    -fx-surface-variant: #E7E0EC;
+    -fx-on-surface-variant: #49454F;
+
+    /* Outline & Dividers */
+    -fx-outline: #79747E;
+
+    /* Background */
+    -fx-background: #FEF7FF;
+    -fx-on-background: #1C1B1F;
+
+    /* Error */
+    -fx-error: #B3261E;
+    -fx-on-error: #FFFFFF;
+    -fx-error-container: #F9DEDC;
+    -fx-on-error-container: #410E0B;
+
+    /* Elevation shadows (subtle) */
+    /* Use modest blur & alpha to mimic M3 elevations */
+}
+
+/* ===== Global Typography / Layout ===== */
+.root {
+    -fx-background-color: -fx-background;
+    -fx-text-fill: -fx-on-surface;
+    -fx-font-family: "Roboto", "Segoe UI", "Noto Sans", sans-serif;
+    -fx-font-smoothing-type: lcd;
+}
+
+/* Headline/Title examples (opt-in via style classes) */
+.headline-large { -fx-font-size: 32px; -fx-font-weight: 400; }
+.title-medium   { -fx-font-size: 16px; -fx-font-weight: 500; }
+.body-medium    { -fx-font-size: 14px; -fx-font-weight: 400; }
+
+/* ===== App Bar (Top) ===== */
+.app-bar {
+    -fx-background-color: -fx-surface;
+    -fx-padding: 12 16;
+    -fx-border-color: -fx-surface-variant;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ===== Cards (Elevated surfaces) ===== */
+.card {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 10, 0.2, 0, 2);
+    /* Use .card.outlined to remove shadow and add outline */
+}
+.card.outlined {
+    -fx-effect: null;
+    -fx-border-color: -fx-outline;
+    -fx-border-width: 1;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+
+/* ===== Buttons ===== */
+/* Filled (default .button) */
+.button {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-on-primary;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-padding: 10 20;
+    -fx-background-radius: 20; /* pill */
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0.25, 0, 2);
+}
+.button:hover   { -fx-background-color: derive(-fx-primary, 10%); }
+.button:pressed { -fx-background-color: derive(-fx-primary, -10%); }
+
+/* Tonal button (.button.tonal) */
+.button.tonal {
+    -fx-background-color: -fx-primary-container;
+    -fx-text-fill: -fx-on-primary-container;
+    -fx-effect: null;
+}
+.button.tonal:hover   { -fx-background-color: derive(-fx-primary-container, 8%); }
+.button.tonal:pressed { -fx-background-color: derive(-fx-primary-container, -8%); }
+
+/* Outlined button (.button.outlined) */
+.button.outlined {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary;
+    -fx-border-color: -fx-outline;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-effect: null;
+}
+.button.outlined:hover { -fx-border-color: -fx-primary; }
+
+/* Text button (.button.text) */
+.button.text {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary;
+    -fx-padding: 8 12;
+    -fx-effect: null;
+}
+
+/* Floating Action Button (.fab) */
+.fab {
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-on-secondary;
+    -fx-background-radius: 28;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 12, 0.3, 0, 4);
+}
+
+/* ===== Text Inputs ===== */
+.text-field, .password-field, .text-area {
+    -fx-background-color: -fx-surface;
+    -fx-text-fill: -fx-on-surface;
+    -fx-prompt-text-fill: -fx-on-surface-variant;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-border-color: -fx-surface-variant;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-border-color: -fx-primary;
+}
+
+/* Helper / error text (apply style class manually) */
+.helper-text { -fx-text-fill: -fx-on-surface-variant; -fx-font-size: 12px; }
+.error-text  { -fx-text-fill: -fx-error; -fx-font-size: 12px; }
+
+/* ===== CheckBox & RadioButton ===== */
+.check-box, .radio-button {
+    -fx-text-fill: -fx-on-surface;
+}
+.check-box .box {
+    -fx-background-color: -fx-surface;
+    -fx-border-color: -fx-outline;
+    -fx-border-width: 2;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+.check-box:selected .box {
+    -fx-background-color: -fx-primary;
+    -fx-border-color: -fx-primary;
+}
+.check-box:selected .mark {
+    -fx-background-color: -fx-on-primary;
+}
+
+.radio-button .radio {
+    -fx-background-color: -fx-surface;
+    -fx-border-color: -fx-outline;
+    -fx-border-width: 2;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+.radio-button:selected .radio {
+    -fx-border-color: -fx-primary;
+}
+.radio-button:selected .dot {
+    -fx-background-color: -fx-primary;
+}
+
+/* ===== Toggle Switch ===== */
+.toggle-switch {
+    -fx-padding: 6 0;
+}
+.toggle-switch .thumb {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 4, 0.2, 0, 1);
+}
+.toggle-switch .track {
+    -fx-background-color: -fx-surface-variant;
+    -fx-background-radius: 10;
+}
+.toggle-switch:selected .track { -fx-background-color: -fx-primary; }
+.toggle-switch:selected .thumb { -fx-background-color: -fx-on-primary; }
+
+/* ===== Slider ===== */
+.slider .track {
+    -fx-background-color: -fx-surface-variant;
+    -fx-background-radius: 4;
+}
+.slider .thumb {
+    -fx-background-color: -fx-primary;
+    -fx-background-radius: 10;
+}
+.slider .tick {
+    -fx-background-color: -fx-outline;
+}
+
+/* ===== Progress ===== */
+.progress-bar {
+    -fx-accent: -fx-primary;
+    -fx-background-insets: 0, 1;
+}
+.progress-indicator {
+    -fx-progress-color: -fx-primary;
+}
+
+/* ===== Tabs ===== */
+.tab-pane {
+    -fx-background-color: -fx-surface;
+}
+.tab-pane .tab-header-area {
+    -fx-background-color: -fx-surface;
+    -fx-border-color: -fx-surface-variant;
+    -fx-border-width: 0 0 1 0;
+}
+.tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-on-surface;
+    -fx-padding: 8 12;
+}
+.tab-pane .tab:selected {
+    -fx-background-color: -fx-primary-container;
+    -fx-background-radius: 8 8 0 0;
+}
+.tab-pane .tab-label { -fx-text-fill: -fx-on-primary-container; }
+
+/* ===== Lists & Tables ===== */
+.list-view, .tree-view, .table-view {
+    -fx-background-color: -fx-surface;
+    -fx-control-inner-background: -fx-surface;
+    -fx-cell-hover-color: derive(-fx-surface-variant, -5%);
+    -fx-padding: 6;
+    -fx-background-radius: 8;
+    -fx-border-color: -fx-surface-variant;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+.list-cell, .tree-cell, .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-on-surface;
+    -fx-padding: 8 12;
+    -fx-border-color: transparent;
+}
+.list-cell:selected, .tree-cell:selected, .table-row-cell:selected {
+    -fx-background-color: #ECE6F0; /* light selection on surface */
+}
+.table-view .column-header-background {
+    -fx-background-color: -fx-surface;
+    -fx-border-color: -fx-surface-variant;
+    -fx-border-width: 0 0 1 0;
+}
+.table-view .column-header .label {
+    -fx-text-fill: -fx-on-surface-variant;
+    -fx-font-weight: 500;
+}
+
+/* ===== Tooltips ===== */
+.tooltip {
+    -fx-background-color: -fx-on-primary;
+    -fx-text-fill: -fx-primary-container;
+    -fx-background-radius: 8;
+    -fx-padding: 8 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 8, 0.3, 0, 2);
+}
+
+/* ===== Dialogs ===== */
+.dialog-pane {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 12, 0.3, 0, 4);
+}
+.dialog-pane > .button-bar > .container {
+    -fx-padding: 0 0 0 0;
+}
+.dialog-pane .header-panel {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 12 0;
+}
