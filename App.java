@@ -68,7 +68,7 @@ public class App extends Application {
         moonlightBtn.setOnAction(event -> playTune(1));
         userNotesBtn.setOnAction(event -> playUserNote());
         fileSelectBtn.setOnAction(event -> openFileChooser());
-        // TODO: Set callback on filePlayBtn to play tuneFile
+        filePlayBtn.setOnAction(event -> playTuneFile());
         
         Scene scene = new Scene(presetTunesBox);
         stage.setScene(scene);
@@ -97,12 +97,29 @@ public class App extends Application {
         }
     }
 
+    /**
+     * Callback method to play previously selected tune file.
+     */
+    void playTuneFile() {
+        if (tuneFile == null) {
+            System.out.println("No file selected. Openning file chooser instead");
+            openFileChooser();
+            return;
+        }
+
+        Tunes.playFile(tuneFile);
+    }
+
+    /**
+     * Callback to open file chooser and set `tuneFile` to selected file.
+     */
     void openFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Tune File");
-        tuneFile = fileChooser.showOpenDialog(null);
+        File selectedFile = fileChooser.showOpenDialog(null);
 
-        if (tuneFile != null) {
+        if (selectedFile != null) {
+            tuneFile = selectedFile;
             fileText.setText(tuneFile.getName());
         }
     }

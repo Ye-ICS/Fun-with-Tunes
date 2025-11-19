@@ -25,10 +25,14 @@ class Tunes {
      * Line 3 contains durations, separated by commas.
      * 
      * @param file File containing notes.
-     * @throws FileNotFoundException 
      */
-    static void playFile(File file) throws FileNotFoundException {
-        Scanner sc = new Scanner(file);
+    static void playFile(File file) {
+        Scanner sc;
+        try {
+            sc = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("File not found: " + file.getName());
+        }
 
         int beatsPerMinute = Integer.parseInt(sc.nextLine());
         String notesLine = sc.nextLine();
