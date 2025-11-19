@@ -53,9 +53,9 @@ class Tunes {
 
     /**
      * Saves notes to a file in following format:
-     * Line 1: notes, separated by commas
-     * Line 2: durations, separated by commas
-     * Line 3: bpm (one integer number)
+     * Line 1: bpm (one integer number)
+     * Line 2: notes, separated by commas
+     * Line 3: durations, separated by commas
      * @param file File to save to
      * @param notes Array of notes as strings
      * @param durations Array of durations for each note
@@ -65,8 +65,25 @@ class Tunes {
     static void saveToFile(File file, String[] notes, double[] durations, int bpm) throws FileNotFoundException {
         PrintWriter fileWriter = new PrintWriter(file);
 
-        // TODO: Write notes, durations, and bpm to file.
-        // TODO: Close the fileWriter to save the file.
+        fileWriter.println(bpm);    // bpm on first line
+        // Write notes on second line, separated by commas
+        for (int i = 0; i < notes.length; i++) {
+            fileWriter.print(notes[i]);
+            if (i == notes.length - 1) {
+                continue;
+            }
+            fileWriter.print(",");
+        }
+        fileWriter.println();
+        // Write durations on third line, separated by commas
+        for (int i = 0; i < durations.length; i++) {
+            fileWriter.print(durations[i]);
+            if (i == durations.length - 1) {
+                continue;
+            }
+            fileWriter.print(",");
+        }
+        fileWriter.close();     // Save and close file
     }
 
     /**

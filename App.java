@@ -152,8 +152,42 @@ public class App extends Application {
      * Callback to open file saver dialog and save current user tune to file.
      */
     void saveTuneToFile() {
-        // TODO: Get the user notes and durations from the TextFields, wrap your code in try-catch to verify they are valid. Return early if invalid.
-        // TODO: Then, similar to openFileChooser to open file chooser, but use showSaveDialog instead of showOpenDialog. Return early if selected file is null (if user cancels).
-        // TODO: Finally, call your completed Tunes.saveToFile to save the notes, durations, and bpm.
+        // Get the notes and durations verify they are valid.
+        String notesLine = notesBox.getText();
+        String durationsLine = durationsBox.getText();
+        String[] notes = notesLine.split(",");
+        double[] durations;
+        
+        // TODO: This section deserves its own method in Tunes.java!
+        try {
+            Tunes.getNoteCodes(notes); // Not using the codes, just verifying notes are valid
+            durations = Utils.parseDoubles(durationsLine.split(","));
+        } catch (NumberFormatException nfe) {
+            System.err.println("Invalid durations.");   // TODO: Show a popup alert.
+            return;
+        } catch (IllegalArgumentException iae) {
+            System.err.println(iae.getMessage());   // TODO: Show a popup alert.
+            return;
+        }
+
+        if (durations.length != notes.length) {
+            System.err.println("Number of durations must match number of notes."); // TODO: Show a popup alert.
+            return;
+        }
+        
+        // Open file chooser to let user choose location and file name.
+        FileChooser newfileChooser = new FileChooser();
+        File saveFile = newfileChooser.showSaveDialog(null);
+        if (saveFile == null) { // User cancelled
+            return; 
+        }
+
+        // Save to file.
+        int bpm = (int) bpmSlider.getValue();
+        try {
+            Tunes.saveToFile(saveFile, notes, durations, bpm);
+        } catch (FileNotFoundException fnfe) {
+            System.err.println("Invalid path??? How? " + saveFile.getAbsolutePath());
+        }
     }
 }
