@@ -46,7 +46,8 @@ public class App extends Application {
         notesBox = new TextField();
         Label durationsLabel = new Label("Durations:");
         durationsBox = new TextField();
-        Button userNotesBtn = new Button("Play Note");
+        Button userNotesBtn = new Button("Play Notes");
+        Button saveToFileBtn = new Button("Save to File");
 
         fileText = new Text();
         Button fileSelectBtn = new Button("Open File");
@@ -66,7 +67,7 @@ public class App extends Application {
         BorderPane.setAlignment(tunesLabel, Pos.CENTER);
         controlsBox.getChildren().addAll(bpmLabel, bpmSlider, volumeLabel, volumeSlider);
         presetTunesBox.setRight(controlsBox);
-        userNotesBox.getChildren().addAll(noteLabel, notesBox, durationsLabel, durationsBox, userNotesBtn);
+        userNotesBox.getChildren().addAll(noteLabel, notesBox, durationsLabel, durationsBox, userNotesBtn, saveToFileBtn);
         tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, userNotesBox, fileText, fileSelectBtn, filePlayBtn);
         presetTunesBox.setCenter(tuneButtonsBox);
 
@@ -74,6 +75,7 @@ public class App extends Application {
         twinkleBtn.setOnAction(event -> playTune(0));
         moonlightBtn.setOnAction(event -> playTune(1));
         userNotesBtn.setOnAction(event -> playUserNotes());
+        saveToFileBtn.setOnAction(event -> saveTuneToFile());
         fileSelectBtn.setOnAction(event -> openFileChooser());
         filePlayBtn.setOnAction(event -> playTuneFile());
         
@@ -144,5 +146,14 @@ public class App extends Application {
             tuneFile = selectedFile;
             fileText.setText(tuneFile.getName());
         }
+    }
+
+    /**
+     * Callback to open file saver dialog and save current user tune to file.
+     */
+    void saveTuneToFile() {
+        // TODO: Get the user notes and durations from the TextFields, wrap your code in try-catch to verify they are valid. Return early if invalid.
+        // TODO: Then, similar to openFileChooser to open file chooser, but use showSaveDialog instead of showOpenDialog. Return early if selected file is null (if user cancels).
+        // TODO: Finally, call your completed Tunes.saveToFile to save the notes, durations, and bpm.
     }
 }
