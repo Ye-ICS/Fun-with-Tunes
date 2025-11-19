@@ -90,10 +90,18 @@ public class App extends Application {
         StdMidi.setVelocity((int) volumeSlider.getValue() * 127 / 100);
         String notesLine = notesBox.getText();
         String durationsLine = durationsBox.getText();
-        String[] notes = notesLine.split(",");
-        double[] durations = Utils.parseDoubles(durationsLine.split(","));
 
-        Tunes.playNotes(notes, durations);
+        try {
+            String[] notes = notesLine.split(",");
+            double[] durations = Utils.parseDoubles(durationsLine.split(","));
+            Tunes.playNotes(notes, durations);
+        } catch (NumberFormatException nfe) {
+            System.err.println("Invalid durations.");   // TODO: Show a popup alert.
+            return;
+        } catch (IllegalArgumentException iae) {
+            System.err.println(iae.getMessage());   // TODO: Show a popup alert.
+            return;
+        }
     }
 
     /**
