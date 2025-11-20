@@ -202,8 +202,15 @@ public class App extends Application {
     Node createKeysRow() {
         HBox keysRow = new HBox();  // You may use a different layout if you wish.
         String[] notes = "C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5".split(",");
-        // TODO: FOR-loop over the notes, create Button with each note as its text.
-        // TODO: Set up callbacks for mouse press and mouse release to call noteDown and noteUp methods below.
+
+        for (int i = 0; i < notes.length; i++) {
+            Button key = new Button(notes[i]);
+            key.setStyle("-fx-pref-height: 120; -fx-font-size: 10; -fx-font-weight: bold; -fx-text-fill: black; -fx-background-color: ivory; -fx-padding: 5;");
+            keysRow.getChildren().add(key);
+            int noteCode = Notes.getNoteCode(notes[i]);
+            key.setOnMousePressed(event -> noteDown(noteCode));
+            key.setOnMouseReleased(event -> noteUp(noteCode));
+        }
         return keysRow;
     }
 
