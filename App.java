@@ -1,6 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-
+import javafx.scene.Node;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,6 +10,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -52,6 +53,8 @@ public class App extends Application {
         fileText = new Text();
         Button fileSelectBtn = new Button("Open File");
         Button filePlayBtn = new Button("Play File");
+
+        Node keyboard = createKeysRow();        
         
         VBox controlsBox = new VBox();
         controlsBox.setStyle("-fx-border-color: red; -fx-spacing: 20; -fx-padding: 10");
@@ -68,7 +71,7 @@ public class App extends Application {
         controlsBox.getChildren().addAll(bpmLabel, bpmSlider, volumeLabel, volumeSlider);
         presetTunesBox.setRight(controlsBox);
         userNotesBox.getChildren().addAll(noteLabel, notesBox, durationsLabel, durationsBox, userNotesBtn, saveToFileBtn);
-        tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, userNotesBox, fileText, fileSelectBtn, filePlayBtn);
+        tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, userNotesBox, fileText, fileSelectBtn, filePlayBtn, keyboard);
         presetTunesBox.setCenter(tuneButtonsBox);
 
         // Reactions (aka callbacks):
@@ -190,5 +193,28 @@ public class App extends Application {
         } catch (FileNotFoundException fnfe) {
             System.err.println("Invalid path??? How? " + saveFile.getAbsolutePath());
         }
+    }
+
+    /**
+     * Creates a keyboard layout.
+     * @return Node keyboard layout.
+     */
+    Node createKeysRow() {
+        HBox keysRow = new HBox();  // You may use a different layout if you wish.
+        String[] notes = "C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5".split(",");
+        // TODO: FOR-loop over the notes, create Button with each note as its text.
+        // TODO: Set up callbacks for mouse press and mouse release to call noteDown and noteUp methods below.
+        return keysRow;
+    }
+
+    void noteDown(int noteCode) {
+        System.out.println("Note on: " + noteCode);
+        StdMidi.setVelocity((int) volumeSlider.getValue() * 127 / 100);
+        StdMidi.noteOn(noteCode);
+    }
+
+    void noteUp(int noteCode) {
+        System.out.println("Note off: " + noteCode);
+        StdMidi.noteOff(noteCode);
     }
 }
