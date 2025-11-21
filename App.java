@@ -20,7 +20,7 @@ public class App extends Application {
     static final String[] keyTexts = "QWERTYUASDFGHJZXCVBNM".split("");
     static final String[] keyNotes = "C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5".split(",");
     boolean[] noteIsPlaying = new boolean[keyNotes.length];
-
+    Thread backgroundTuneThread = null;
     Slider bpmSlider;
     Slider volumeSlider;
     TextField notesBox;
@@ -45,6 +45,7 @@ public class App extends Application {
         tuneButtonsBox.setStyle("-fx-border-color: green; -fx-padding: 10; -fx-hgap: 20; -fx-vgap: 20");
         Button twinkleBtn = new Button("Twinkle");
         Button moonlightBtn = new Button("Moonlight Sonata");
+        Button stopBtn = new Button("Stop Tune");
 
         VBox userNotesBox = new VBox();
         Label noteLabel = new Label("Custom notes:");
@@ -58,7 +59,8 @@ public class App extends Application {
         Button fileSelectBtn = new Button("Open File");
         Button filePlayBtn = new Button("Play File");
 
-        Node keyboard = createKeysRow();        
+        Node keyboard = createKeysRow();   
+        keyboard.setStyle("-fx-border-color: cyan");     
         
         VBox controlsBox = new VBox();
         controlsBox.setStyle("-fx-border-color: red; -fx-spacing: 20; -fx-padding: 10");
@@ -75,12 +77,13 @@ public class App extends Application {
         controlsBox.getChildren().addAll(bpmLabel, bpmSlider, volumeLabel, volumeSlider);
         presetTunesBox.setRight(controlsBox);
         userNotesBox.getChildren().addAll(noteLabel, notesBox, durationsLabel, durationsBox, userNotesBtn, saveToFileBtn);
-        tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, userNotesBox, fileText, fileSelectBtn, filePlayBtn, keyboard);
+        tuneButtonsBox.getChildren().addAll(twinkleBtn, moonlightBtn, stopBtn, userNotesBox, fileText, fileSelectBtn, filePlayBtn, keyboard);
         presetTunesBox.setCenter(tuneButtonsBox);
 
         // Reactions (aka callbacks):
         twinkleBtn.setOnAction(event -> playTune(0));
         moonlightBtn.setOnAction(event -> playTune(1));
+        stopBtn.setOnAction(event -> stopTune());
         userNotesBtn.setOnAction(event -> playUserNotes());
         saveToFileBtn.setOnAction(event -> saveTuneToFile());
         fileSelectBtn.setOnAction(event -> openFileChooser());
@@ -121,14 +124,33 @@ public class App extends Application {
      * @param tuneCode 0 for Twinkle, 1 for Moonlight Sonata
      */
     void playTune(int tuneCode) {
+        if (backgroundTuneThread != null && backgroundTuneThread.isAlive()) {
+            System.out.println("A tune is already playing...");
+            return;
+        }
+
         int bpm = (int) bpmSlider.getValue();
         int volume = (int) volumeSlider.getValue();
         StdMidi.setVelocity(volume * 127 / 100);
-        switch (tuneCode) {
-            case 0 -> Tunes.playTwinkle(bpm);
-            case 1 -> Tunes.playMoonlightSonata(bpm);
-            default -> System.out.println("Invalid tune code");
+        backgroundTuneThread = new Thread(() -> {
+            switch (tuneCode) {
+                case 0 -> Tunes.playTwinkle(bpm);
+                case 1 -> Tunes.playMoonlightSonata(bpm);
+                default -> System.out.println("Invalid tune code");
+            }
+        });
+        backgroundTuneThread.start();
+    }
+
+    void stopTune() {
+        if (backgroundTuneThread == null) {
+            return; // Nothing to stop
         }
+
+        backgroundTuneThread.stop();
+        backgroundTuneThread = null;
+        StdMidi.allNotesOff();  // Turn off any lingering notes.
+
     }
 
     /**
