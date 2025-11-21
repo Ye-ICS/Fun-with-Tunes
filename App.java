@@ -17,6 +17,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class App extends Application {
+    static final String[] keyTexts = "QWERTYUASDFGHJZXCVBNM".split("");
+    static final String[] keyNotes = "C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5".split(",");
+    boolean[] noteIsPlaying = new boolean[keyNotes.length];
+
     Slider bpmSlider;
     Slider volumeSlider;
     TextField notesBox;
@@ -81,6 +85,8 @@ public class App extends Application {
         saveToFileBtn.setOnAction(event -> saveTuneToFile());
         fileSelectBtn.setOnAction(event -> openFileChooser());
         filePlayBtn.setOnAction(event -> playTuneFile());
+        keyboard.setOnKeyPressed(keyEvent -> noteDownFromKey(keyEvent.getText()));
+        keyboard.setOnKeyReleased(keyEvent -> noteUpFromKey(keyEvent.getText()));
         
         Scene scene = new Scene(presetTunesBox);
         scene.getStylesheets().add("styles/default_theme.css");
@@ -201,13 +207,12 @@ public class App extends Application {
      */
     Node createKeysRow() {
         HBox keysRow = new HBox();  // You may use a different layout if you wish.
-        String[] notes = "C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5".split(",");
 
-        for (int i = 0; i < notes.length; i++) {
-            Button key = new Button(notes[i]);
-            key.setStyle("-fx-pref-height: 120; -fx-font-size: 10; -fx-font-weight: bold; -fx-text-fill: black; -fx-background-color: ivory; -fx-padding: 5;");
+        for (int i = 0; i < keyNotes.length; i++) {
+            Button key = new Button(keyTexts[i] + "\n" + keyNotes[i]);
+            key.setStyle("-fx-pref-height: 120; -fx-font-size: 10; -fx-font-weight: bold; -fx-text-fill: black; -fx-text-alignment: center; -fx-background-color: ivory; -fx-padding: 5;");
             keysRow.getChildren().add(key);
-            int noteCode = Notes.getNoteCode(notes[i]);
+            int noteCode = Notes.getNoteCode(keyNotes[i]);
             key.setOnMousePressed(event -> noteDown(noteCode));
             key.setOnMouseReleased(event -> noteUp(noteCode));
         }
@@ -223,5 +228,32 @@ public class App extends Application {
     void noteUp(int noteCode) {
         System.out.println("Note off: " + noteCode);
         StdMidi.noteOff(noteCode);
+    }
+
+    /**
+     * Start note corresponding to pressed key, if not already started.
+     * @param keyText Name of key pressed. Eg: Q, W, E, etc.
+     */
+    void noteDownFromKey(String keyText) {
+        // Find key in keyTexts array matching keyText
+        for (int i = 0; i < keyTexts.length; i++) {
+            if (keyTexts[i].equalsIgnoreCase(keyText) && !noteIsPlaying[i]) {  // if found and not already playing
+                int noteCode = Notes.getNoteCode(keyNotes[i]);
+                noteDown(noteCode);
+                noteIsPlaying[i] = true;   // Mark note as playing
+                return;
+            }
+        }
+    }
+
+    /**
+     * Stop note corresponding to released key.
+     * @param keyText Name of key released. Eg: Q, W, E, etc.
+     */
+    void noteUpFromKey(String keyText) {
+        // TODO: Loop through keyTexts array to find matching keyText
+        // TODO: If found, stop the note from keyNotes array at that index.
+        // Hint: Convert the note to its note code, and call the noteUp method. Then return.
+        // TODO: After turning the note off, set noteIsPlaying at that index to false.
     }
 }
