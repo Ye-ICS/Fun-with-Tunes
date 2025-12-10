@@ -273,9 +273,14 @@ public class App extends Application {
      * @param keyText Name of key released. Eg: Q, W, E, etc.
      */
     void noteUpFromKey(String keyText) {
-        // TODO: Loop through keyTexts array to find matching keyText
-        // TODO: If found, stop the note from keyNotes array at that index.
-        // Hint: Convert the note to its note code, and call the noteUp method. Then return.
-        // TODO: After turning the note off, set noteIsPlaying at that index to false.
+        // Find key in keyTexts array matching keyText
+        for (int i = 0; i < keyTexts.length; i++) {
+            if (keyTexts[i].equalsIgnoreCase(keyText) && noteIsPlaying[i]) {  // if found and currently playing
+                int noteCode = Notes.getNoteCode(keyNotes[i]);
+                noteUp(noteCode);
+                noteIsPlaying[i] = false;   // Mark note as not playing
+                return;
+            }
+        }
     }
 }
