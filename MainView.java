@@ -17,7 +17,6 @@ import javafx.stage.FileChooser;
 class MainView extends BorderPane {
     static final String[] keyTexts = "QWERTYUASDFGHJZXCVBNM".split("");
     static final String[] keyNotes = "C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5".split(",");
-    boolean[] noteIsPlaying = new boolean[keyNotes.length];
     Thread backgroundTuneThread = null;
     Slider bpmSlider;
     Slider volumeSlider;
@@ -52,8 +51,7 @@ class MainView extends BorderPane {
         Button fileSelectBtn = new Button("Open File");
         Button filePlayBtn = new Button("Play File");
 
-        Node keyboard = createKeysRow();   
-        keyboard.setStyle("-fx-border-color: cyan");     
+        KeyboardView keyboard = new KeyboardView();
         
         VBox controlsBox = new VBox();
         controlsBox.setStyle("-fx-border-color: red; -fx-spacing: 20; -fx-padding: 10");
@@ -81,8 +79,7 @@ class MainView extends BorderPane {
         saveToFileBtn.setOnAction(event -> saveTuneToFile());
         fileSelectBtn.setOnAction(event -> openFileChooser());
         filePlayBtn.setOnAction(event -> playTuneFile());
-        keyboard.setOnKeyPressed(keyEvent -> noteDownFromKey(keyEvent.getText()));
-        keyboard.setOnKeyReleased(keyEvent -> noteUpFromKey(keyEvent.getText()));
+
     }
 
     /**
@@ -211,24 +208,6 @@ class MainView extends BorderPane {
         }
     }
 
-    /**
-     * Creates a keyboard layout.
-     * @return Node keyboard layout.
-     */
-    Node createKeysRow() {
-        HBox keysRow = new HBox();  // You may use a different layout if you wish.
-
-        for (int i = 0; i < keyNotes.length; i++) {
-            Button key = new Button(keyTexts[i] + "\n" + keyNotes[i]);
-            key.setStyle("-fx-pref-height: 120; -fx-font-size: 10; -fx-font-weight: bold; -fx-text-fill: black; -fx-text-alignment: center; -fx-background-color: ivory; -fx-padding: 5;");
-            keysRow.getChildren().add(key);
-            int noteCode = Notes.getNoteCode(keyNotes[i]);
-            key.setOnMousePressed(event -> noteDown(noteCode));
-            key.setOnMouseReleased(event -> noteUp(noteCode));
-        }
-        return keysRow;
-    }
-
     void noteDown(int noteCode) {
         System.out.println("Note on: " + noteCode);
         StdMidi.setVelocity((int) volumeSlider.getValue() * 127 / 100);
@@ -240,35 +219,5 @@ class MainView extends BorderPane {
         StdMidi.noteOff(noteCode);
     }
 
-    /**
-     * Start note corresponding to pressed key, if not already started.
-     * @param keyText Name of key pressed. Eg: Q, W, E, etc.
-     */
-    void noteDownFromKey(String keyText) {
-        // Find key in keyTexts array matching keyText
-        for (int i = 0; i < keyTexts.length; i++) {
-            if (keyTexts[i].equalsIgnoreCase(keyText) && !noteIsPlaying[i]) {  // if found and not already playing
-                int noteCode = Notes.getNoteCode(keyNotes[i]);
-                noteDown(noteCode);
-                noteIsPlaying[i] = true;   // Mark note as playing
-                return;
-            }
-        }
-    }
-
-    /**
-     * Stop note corresponding to released key.
-     * @param keyText Name of key released. Eg: Q, W, E, etc.
-     */
-    void noteUpFromKey(String keyText) {
-        // Find key in keyTexts array matching keyText
-        for (int i = 0; i < keyTexts.length; i++) {
-            if (keyTexts[i].equalsIgnoreCase(keyText) && noteIsPlaying[i]) {  // if found and currently playing
-                int noteCode = Notes.getNoteCode(keyNotes[i]);
-                noteUp(noteCode);
-                noteIsPlaying[i] = false;   // Mark note as not playing
-                return;
-            }
-        }
-    }
+    
 }
